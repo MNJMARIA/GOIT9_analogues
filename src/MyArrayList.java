@@ -1,67 +1,64 @@
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class MyArrayList<T> {
     private static final int INIT_SIZE = 5;
-    private Object[] data;
-    private int indexOfSize;
+    private Object[] array;
+    private int size;
 
     public MyArrayList()
     {
-        data = new Object[INIT_SIZE];
+        array = new Object[INIT_SIZE];
     }
     public void add(T value)
     {
         resizeIfNeed();
-        data[indexOfSize] = value;
-        indexOfSize++;
+        array[size] = value;
+        size++;
     }
     private void resizeIfNeed()
     {
-        if(indexOfSize == data.length)
+        if(size == array.length)
         {
-            System.out.println("Resize happened, indexOfSize " + indexOfSize);
-            int newSize = data.length * 2;
-            Object[] newData = new Object[newSize];
-            System.arraycopy(data, 0,newData, 0, data.length);
-            data = newData;
+            System.out.println("Resize happened, indexOfSize " + size);
+            Object[] newArray = new Object[array.length * 2];
+            System.arraycopy(array, 0,newArray, 0, size);
+            array = newArray;
         }
     }
-    public void remove(int index)
+    @SuppressWarnings("unchecked")
+    public T remove(int index)
     {
-        int sizeOfStartArray = index;
-        int sizeOfEndArray = size() - index - 1;
-        Object[] tempStartArray = new Object[sizeOfStartArray];
-        Object[] tempEndArray = new Object[sizeOfEndArray];
-        Object[] newArray = new Object[data.length - 1];
-
-        System.arraycopy(data, 0, tempStartArray, 0, index);
-        System.arraycopy(data, index+1, tempEndArray, 0, data.length);
-
-        ////////////////newArray =
-
+        Objects.checkIndex(index, size);
+        T removedElement = (T) array[index];
+        System.arraycopy(array, index+1, array, index, size - index - 1);
+size--;
+        return removedElement;
     }
     public void clear()
     {
-
+        size = 0;
+        array = new Object[INIT_SIZE];
     }
     public int size()
     {
-        return indexOfSize;
+        return size;
     }
-    public T get(int i)
+    @SuppressWarnings("unchecked")
+    public T get(int index)
     {
-        return (T) data[i];
+        Objects.checkIndex(index, size);
+        return (T) array[index];
         //TODO А якщо і<0 або i>data.length
     }
-
-
     @Override
     public String toString() {
         StringJoiner result = new StringJoiner(", ");
-        for(int i =0; i < indexOfSize; i++)
+        for(int i =0; i < size; i++)
         {
-            result.add(data[i].toString());
+            result.add(array[i].toString());
         }
         return "[" + result + "]";
     }
