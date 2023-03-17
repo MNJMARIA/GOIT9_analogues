@@ -3,8 +3,8 @@ import java.util.StringJoiner;
 
 public class MyLinkedList<T> {
     private static class Node<T>{
-        T element;
-        Node<T> next;
+        private T element;
+        private Node<T> next;
 
         public Node(T element) {
             this.element = element;
@@ -17,6 +17,10 @@ public class MyLinkedList<T> {
     {
         Node<T> newNode = new Node<> (value); //коли треба додати елемент нам потрібно
                                               // створити новий вузол, тобто новий Node
+
+        //Якщо перший вузол (first) є null - тобто список порожній,
+        // тоді змінній first і last присвоюється значення newNode.
+        // Це означає, що newNode є єдиним елементом у списку.
         if(first == null)
         {
             first = last = newNode;
@@ -36,13 +40,12 @@ public class MyLinkedList<T> {
         {
             removedElement = first.element;
             first = first.next; // зсуваємо початковий елемент вправо
-            if(first == null) // якщо  в нас був лише 1 елемент в списку і
-            // ми його видалили, тоді посиланння на настпуний елемент не буде
+            if(first == null) // якщо  в нас був лише 1 елемент в списку і ми його видалили, тоді посиланння на настпуний елемент не буде
             {
                 last = null;
             }
         }
-        else
+        else // якщо видаляється НЕ перший елемент
         {
             Node<T> previous = getNodeByIndex(index - 1);  //знайшли попередню ноду
             removedElement = previous.next.element; //зберігаємо елемент який будемо видаляти

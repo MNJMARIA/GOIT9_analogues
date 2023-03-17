@@ -71,6 +71,7 @@ public class MyStack<T> {
         stack[top] = null;
         top--;
         size--;
+        trimToSize();
         return value;
     }
     private boolean isEmpty() {

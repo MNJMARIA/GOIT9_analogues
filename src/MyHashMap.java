@@ -1,21 +1,20 @@
-import java.util.Arrays;
 import java.util.StringJoiner;
 
-public class MyHashMap {
+public class MyHashMap <K, V> {
     // Вкладений клас, що представляє вузол мапи
-    private static class Node {
-        private Object key;
-        private Object value;
-        private Node next;
+    private static class Node <K, V>{
+        private K key;
+        private V value;
+        private Node <K, V> next;
 
-        Node(Object key, Object value) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
         }
     }
     // Константа, що визначає початковий розмір мапи
     private static final int DEFAULT_CAPACITY = 16;
-    private Node[] table;
+    private Node <K, V> [] table;
     private int size;
 
     public MyHashMap() {
@@ -23,10 +22,10 @@ public class MyHashMap {
         size = 0;
     }
 
-    public void put(Object key, Object value) // Додає ключ та значення до мапи
+    public void put(K key, V value) // Додає ключ та значення до мапи
     {
         int index = hash(key);
-        Node node = table[index];
+        Node <K, V> node = table[index];
 
         // Перевірка, чи ключ вже є в мапі
         while (node != null) {
@@ -38,16 +37,16 @@ public class MyHashMap {
         }
 
         // Create a new node with the key-value pair and add it to the map
-        Node newNode = new Node(key, value);
+        Node <K, V> newNode = new Node(key, value);
         newNode.next = table[index];
         table[index] = newNode;
         size++;
     }
-    public void remove(Object key)
+    public void remove(K key)
     {
         int index = hash(key);
-        Node node = table[index];
-        Node prev = null;
+        Node <K, V> node = table[index];
+        Node <K, V> prev = null;
 
         // Find the node with the given key and remove it
         while (node != null) {
@@ -73,10 +72,10 @@ public class MyHashMap {
     {
         return size;
     }
-    public Object get(Object key)
+    public V get(K key)
     {
         int index = hash(key);
-        Node node = table[index];
+        Node <K, V> node = table[index];
 
         // Find the node with the given key and return its value
         while (node != null) {
@@ -89,14 +88,14 @@ public class MyHashMap {
         // Key not found in the map
         return null;
     }
-    private int hash(Object key) {
+    private int hash(K key) {
         return Math.abs(key.hashCode() % table.length);
     }
 
     @Override
     public String toString() {
         StringJoiner result = new StringJoiner(", ");
-        for (Node node : table) {
+        for (Node <K, V> node : table) {
             while (node != null) {
                 result.add("(" + node.key.toString() + ", " + node.value.toString() + ")");
                 node = node.next;
